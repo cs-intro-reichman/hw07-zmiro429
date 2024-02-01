@@ -1,7 +1,6 @@
 
 public class SpellChecker {
 
-
 	public static void main(String[] args) {
 		String word = args[0];
 		int threshold = Integer.parseInt(args[1]);
@@ -12,10 +11,28 @@ public class SpellChecker {
 
 	public static String tail(String str) {
 		// Your code goes here
+		return str.substring(1);
 	}
 
 	public static int levenshtein(String word1, String word2) {
-		// Your code goes here
+
+		// make word1 and word2 lower case
+		word1 = word1.toLowerCase();
+		word2 = word2.toLowerCase();
+
+		if (word2.length() == 0)
+			return word1.length();
+		else if (word1.length() == 0)
+			return word2.length();
+		else if (word1.charAt(0) == word2.charAt(0)) {
+			return levenshtein(tail(word1), tail(word2));
+		} else {
+			return 1 + minvalueforlevenshtien(
+					levenshtein(tail(word1), word2), // deletion
+					levenshtein(word1, tail(word2)), // insertion
+					levenshtein(tail(word1), tail(word2))); // substitution
+		}
+
 	}
 
 	public static String[] readDictionary(String fileName) {
@@ -23,13 +40,35 @@ public class SpellChecker {
 
 		In in = new In(fileName);
 
-		// Your code here
+		for (int i = 0; i < dictionary.length; i++) {
+			dictionary[i] = in.readString();
+		}
 
 		return dictionary;
 	}
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
-		// Your code goes here
+		String failsafe = word;
+		int k = levenshtein(word, dictionary[0]);
+		for (int i = 1; i < dictionary.length; i++) {
+			if (word == dictionary[i])
+				return word;
+			if (levenshtein(word, dictionary[i]) <= threshold && levenshtein(word, dictionary[i]) < k) {
+				failsafe = dictionary[i];
+				k = levenshtein(word, dictionary[i]);
+			}
+		}
+		return failsafe;
+	}
+
+	// min value of 2 numbers
+	public static int minvalue(int alpha1, int alpha2) {
+		return Math.min(alpha1, alpha2);
+	}
+
+	// minimum value of three numbers
+	public static int minvalueforlevenshtien(int num1, int num2, int num3) {
+		return Math.min(Math.min(num1, num2), num3);
 	}
 
 }
