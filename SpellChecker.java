@@ -36,6 +36,8 @@ public class SpellChecker {
 			else
 				biggest = word2.length();
 			for (int i = 0; i < biggest; i++) {
+				if (i > word1.length() - 1 || i > word2.length() - 1)
+					sum++;
 				if (word1.charAt(minvalue(i, word1.length() - 1)) != word2.charAt(minvalue(i, word2.length() - 1))) {
 					sum++;
 				}
@@ -61,7 +63,6 @@ public class SpellChecker {
 	}
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
-		// Your code goes here
 		String failsafe = word;
 		for (int i = 0; i < dictionary.length; i++) {
 			if (word == dictionary[i])
