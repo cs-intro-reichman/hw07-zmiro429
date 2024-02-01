@@ -15,6 +15,7 @@ public class SpellChecker {
 	}
 
 	public static int levenshtein(String word1, String word2) {
+
 		// make word1 and word2 lower case
 		word1 = word1.toLowerCase();
 		word2 = word2.toLowerCase();
@@ -49,7 +50,7 @@ public class SpellChecker {
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
 		String failsafe = word;
-		for (int i = 2960; i < 2970; i++) {
+		for (int i = 0; i < dictionary.length; i++) {
 			if (word == dictionary[i])
 				return word;
 			if (levenshtein(word, dictionary[i]) <= threshold) {
