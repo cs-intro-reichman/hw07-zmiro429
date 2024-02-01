@@ -62,12 +62,15 @@ public class SpellChecker {
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
 		// Your code goes here
+		String failsafe = word;
 		for (int i = 0; i < dictionary.length; i++) {
+			if (word == dictionary[i])
+				return word;
 			if (levenshtein(word, dictionary[i]) <= threshold) {
-				return dictionary[i];
+				failsafe = dictionary[i];
 			}
 		}
-		return word;
+		return failsafe;
 	}
 
 	// min value of 2 numbers
