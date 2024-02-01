@@ -31,7 +31,6 @@ public class SpellChecker {
 					levenshtein(tail(word1), word2), // deletion
 					levenshtein(word1, tail(word2)), // insertion
 					levenshtein(tail(word1), tail(word2))); // substitution
-
 		}
 
 	}
@@ -50,11 +49,13 @@ public class SpellChecker {
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
 		String failsafe = word;
-		for (int i = 0; i < dictionary.length; i++) {
+		int k = levenshtein(word, dictionary[0]);
+		for (int i = 1; i < dictionary.length; i++) {
 			if (word == dictionary[i])
 				return word;
-			if (levenshtein(word, dictionary[i]) <= threshold) {
+			if (levenshtein(word, dictionary[i]) <= threshold && levenshtein(word, dictionary[i]) < k) {
 				failsafe = dictionary[i];
+				k = levenshtein(word, dictionary[i]);
 			}
 		}
 		return failsafe;
